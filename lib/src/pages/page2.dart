@@ -1,6 +1,4 @@
-import 'package:churchproapp/src/models/user_model.dart';
 import 'package:churchproapp/src/providers/user_services_provider.dart';
-import 'package:churchproapp/src/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,16 +7,17 @@ class Page2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final serviceProvider = Provider.of<UserServices>(context);
+    final serviceProvider = Provider.of<UserServicesProvider>(context);
 
-    List<User> user = serviceProvider.getUser;
-
+    //todo: Investigar por que tengo que hacer doble instancia para que funcione el servicio que consulta los usuarios
     return Scaffold(
       body: Container(
         color: Colors.green,
         child: Center(
           //child: Text('Page 2 Screen'),
-          child: Text(user.length > 0 ? user[0].fullName : ''),
+          child: Text(serviceProvider.users.isNotEmpty
+              ? serviceProvider.users[0].fullName
+              : ''),
         ),
       ),
     );

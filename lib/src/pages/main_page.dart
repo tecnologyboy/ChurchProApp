@@ -47,6 +47,7 @@ class _Pages extends StatelessWidget {
       children: [
         const Page1(),
         const Page2(),
+
         //Page2()
       ],
     );
