@@ -1,3 +1,7 @@
+import 'package:churchproapp/src/pages/page1.dart';
+import 'package:churchproapp/src/pages/page2.dart';
+import 'package:churchproapp/src/providers/navigation_provider.dart';
+import 'package:churchproapp/src/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -6,10 +10,7 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (_) => _NavigationModel(),
-        child:
-            Scaffold(body: _Pages(), bottomNavigationBar: const _Navigation()));
+    return Scaffold(body: _Pages(), bottomNavigationBar: const _Navigation());
   }
 }
 
@@ -20,11 +21,12 @@ class _Navigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final navigationModel = Provider.of<_NavigationModel>(context);
+    //final navigationModel = Provider.of<_NavigationModel>(context);
+    final navigationProvider = Provider.of<NavigationProvider>(context);
 
     return BottomNavigationBar(
-        currentIndex: navigationModel.curPage,
-        onTap: (i) => navigationModel.curPage = i,
+        currentIndex: navigationProvider.curPage,
+        onTap: (i) => navigationProvider.curPage = i,
         items: const [
           BottomNavigationBarItem(
               icon: Icon(Icons.person_2_outlined), label: 'Para ti'),
@@ -37,15 +39,15 @@ class _Navigation extends StatelessWidget {
 class _Pages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<NavigationProvider>(context);
+
     return PageView(
+      controller: provider.pageController,
       physics: const NeverScrollableScrollPhysics(),
       children: [
-        Container(
-          color: Colors.red,
-        ),
-        Container(
-          color: Colors.green,
-        )
+        const Page1(),
+        const Page2(),
+        //Page2()
       ],
     );
   }
@@ -54,10 +56,16 @@ class _Pages extends StatelessWidget {
 class _NavigationModel with ChangeNotifier {
   int _curPage = 0;
 
+  PageController _pageController = new PageController();
+
   int get curPage => _curPage;
 
   set curPage(int value) {
     _curPage = value;
+    _pageController.animateToPage(value,
+        duration: Duration(milliseconds: 250), curve: Curves.easeOut);
     notifyListeners();
   }
+
+  PageController get pageController => _pageController;
 }
