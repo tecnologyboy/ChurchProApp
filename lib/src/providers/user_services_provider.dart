@@ -26,10 +26,14 @@ import "package:flutter/material.dart";
 class UserServicesProvider with ChangeNotifier {
   List<User> users = [];
 
-  UserServices usrServ = UserServices();
-
   UserServicesProvider() {
-    users = usrServ.user;
+    getUsersAsync();
+  }
+
+  getUsersAsync() async {
+    UserServices usrServ = UserServices();
+
+    users = usrServ.users;
 
     notifyListeners();
   }

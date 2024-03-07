@@ -7,7 +7,7 @@ class Page1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final serviceProvider = Provider.of<UserServicesProvider>(context);
+    //final serviceProvider = Provider.of<UserServicesProvider>(context);
 
     return Scaffold(
       body: Container(
